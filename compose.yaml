@@ -8,27 +8,20 @@ services:
     environment:
       TZ: Asia/Tokyo
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     ports:
       - 8080:8080
     volumes:
       - ./:/src
   db:
-    image: mysql:8.3.0
-    platform: linux/amd64
+    image: postgres:16.4
     ports:
-      - 33306:3306
+      - 5432:5432
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: main_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      TZ: Asia/Tokyo
-    healthcheck:
-      test: mysqladmin ping -proot
+      POSTGRES_PASSWORD: password
     volumes:
-      - db-store:/var/lib/mysql
+      - ./postgres/init:/docker-entrypoint-initdb.d
+      - db-store:/var/lib/postgresql/data
 
 volumes:
   db-store:

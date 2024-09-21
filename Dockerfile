@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG GO_VERSION=1.22.3
+ARG GO_VERSION=1.23.1
 
 ### Development stage ###
 FROM golang:${GO_VERSION} AS dev
@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
-RUN go install github.com/cosmtrek/air@latest \
+RUN go install github.com/air-verse/air@latest \
   && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.57.2
 
 COPY . .
